@@ -22,9 +22,9 @@ const STATS: Stat[] = [
 ];
 
 const OVERDUE_ROWS = [
-  { memberId: "#48964", member: "Phillip Workman", title: "Magnolia Palace", isbn: "3234", dueIn: "5d", fine: "$10", status: "Reminder sent" },
-  { memberId: "#12903", member: "Kianna Doin", title: "Don Quixote", isbn: "1188", dueIn: "2d", fine: "$15", status: "Call required" },
-  { memberId: "#22391", member: "Livia Kenter", title: "Pride and Prejudice", isbn: "0031", dueIn: "1d", fine: "$20", status: "Escalated" },
+  { memberId: "#48964", member: "Ali", title: "Magnolia Palace", isbn: "3234", dueIn: "5d", fine: "$10", status: "Reminder sent" },
+  { memberId: "#12903", member: "mishii", title: "Don Quixote", isbn: "1188", dueIn: "2d", fine: "$15", status: "Call required" },
+  { memberId: "#22391", member: "Fatima", title: "Pride and Prejudice", isbn: "0031", dueIn: "1d", fine: "$20", status: "Escalated" },
 ];
 
 export default function Page() {

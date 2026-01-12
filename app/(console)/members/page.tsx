@@ -7,10 +7,10 @@ import ConsoleShell from "../_components/ConsoleShell";
 import { Badge, Card } from "../_components/ui";
 
 const MEMBERS = [
-  { id: "#12903", name: "Kianna Doin", type: "Student", status: "Active", joined: "2025-09-12", openLoans: 2, overdue: 1 },
-  { id: "#22391", name: "Livia Kenter", type: "Faculty", status: "Active", joined: "2025-07-03", openLoans: 1, overdue: 0 },
-  { id: "#48964", name: "Phillip Workman", type: "Student", status: "Hold", joined: "2025-10-21", openLoans: 3, overdue: 2 },
-  { id: "#77102", name: "Hanna Gouse", type: "Visitor", status: "Active", joined: "2025-12-01", openLoans: 1, overdue: 0 },
+  { id: "#12903", name: "mishii", type: "Student", status: "Active", joined: "2025-09-12", openLoans: 2, overdue: 1 },
+  { id: "#22391", name: "Fatima", type: "Faculty", status: "Active", joined: "2025-07-03", openLoans: 1, overdue: 0 },
+  { id: "#48964", name: "Ali", type: "Student", status: "Hold", joined: "2025-10-21", openLoans: 3, overdue: 2 },
+  { id: "#77102", name: "Muhammad", type: "Visitor", status: "Active", joined: "2025-12-01", openLoans: 1, overdue: 0 },
 ];
 
 export default function Page() {

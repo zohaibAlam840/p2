@@ -6,7 +6,7 @@ import { Card, Input, PrimaryButton, Select } from "../_components/ui";
 
 export default function Page() {
   const [settings, setSettings] = React.useState({
-    libraryName: "Library App",
+    LIBRARYName: "App",
     timezone: "Asia/Karachi",
     emailReminders: "Enabled",
     defaultLoanDays: "14",
@@ -26,7 +26,7 @@ export default function Page() {
       <Card title="General">
         <form onSubmit={save} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input label="Library Name" value={settings.libraryName} onChange={(e) => set("libraryName", e.target.value)} />
+            <Input label="LSIT LIBRARY Name" value={settings.LIBRARYName} onChange={(e) => set("LIBRARYName", e.target.value)} />
             <Input label="Timezone" value={settings.timezone} onChange={(e) => set("timezone", e.target.value)} />
             <Select label="Email reminders" value={settings.emailReminders} onChange={(e) => set("emailReminders", e.target.value)}>
               <option>Enabled</option>

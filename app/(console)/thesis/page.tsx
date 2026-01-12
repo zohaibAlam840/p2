@@ -15,7 +15,7 @@ const THESIS_STATS = [
 
 const PENDING = [
   { id: "T-2025-091", title: "Blockchain-based Archiving", student: "Ayesha Khalid", dept: "CS", year: "2025", status: "Supervisor review" },
-  { id: "T-2025-077", title: "Water Quality Prediction", student: "Hassan Raza", dept: "Env", year: "2025", status: "Library verification" },
+  { id: "T-2025-077", title: "Water Quality Prediction", student: "Hassan Raza", dept: "Env", year: "2025", status: "LSIT LIBRARY verification" },
 ];
 
 const RECENT_ISSUES = [

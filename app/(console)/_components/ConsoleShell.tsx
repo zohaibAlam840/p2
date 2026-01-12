@@ -69,7 +69,7 @@ export default function ConsoleShell({
               L
             </div>
             <div className="leading-tight">
-              <div className="font-semibold text-slate-900">Library App</div>
+              <div className="font-semibold text-slate-900">LSIT LIBRARY</div>
               <div className="text-xs text-slate-500">Operations Console</div>
             </div>
           </div>

@@ -6,7 +6,7 @@ import ConsoleShell from "../_components/ConsoleShell";
 import { Badge, Card, Input, PrimaryButton, SecondaryButton, Select } from "../_components/ui";
 
 const RECENT_TXNS = [
-  { id: "#48964", isbn: "3234", title: "Magnolia Palace", member: "Phillip Workman", issued: "2025-12-27", returned: "—", method: "Desk" },
+  { id: "#48964", isbn: "3234", title: "Magnolia Palace", member: "Ali", issued: "2025-12-27", returned: "—", method: "Desk" },
   { id: "#84011", isbn: "8842", title: "Alice’s Adventures in Wonder...", member: "Cristofer Bator", issued: "2025-12-26", returned: "2025-12-27", method: "Desk" },
   { id: "#51002", isbn: "9012", title: "Treasure Island", member: "Tatiana Arcand", issued: "2025-12-25", returned: "2025-12-26", method: "Kiosk" },
 ];
