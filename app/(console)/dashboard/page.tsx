@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowUpRight, Download, Filter, Plus, ShieldCheck, Clock, Activity } from "lucide-react";
-import ConsoleShell from '../_components/ConsoleShell';
+import ConsoleShell from "../_components/ConsoleShell";
 import { Badge, Card, MiniBar, Pill } from "../_components/ui";
 
 type Stat = {
@@ -38,13 +38,10 @@ export default function Page() {
             <Filter className="h-4 w-4 text-slate-500" />
             Filters
           </button>
-          <button className="inline-flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50">
-            <Download className="h-4 w-4 text-slate-500" />
-            Export
-          </button>
+
           <Link
             href="/add-books"
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700"
           >
             <Plus className="h-4 w-4" />
             Add Book
@@ -62,7 +59,7 @@ export default function Page() {
               <div className="text-xs text-slate-600">Email, DB, reminders OK</div>
             </div>
           </div>
-          <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">Healthy</span>
+          <span className="text-xs font-medium text-blue-700 bg-blue-50 px-2 py-1 rounded-full">Healthy</span>
         </div>
 
         <div className="rounded-2xl border bg-slate-50 px-4 py-3 flex items-center justify-between">
@@ -113,12 +110,9 @@ export default function Page() {
       </div>
 
       {/* Overdue */}
-      <Card
-        title="Overdue’s History"
-        right={<span className="text-xs text-slate-500">{OVERDUE_ROWS.length} items</span>}
-      >
+      <Card title="Overdue’s History" right={<span className="text-xs text-slate-500">{OVERDUE_ROWS.length} items</span>}>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[720px]">
             <thead>
               <tr className="text-xs text-slate-500">
                 <th className="text-left font-medium py-2">Member</th>
@@ -150,7 +144,7 @@ export default function Page() {
                           ? "bg-rose-50 text-rose-700"
                           : r.status === "Call required"
                           ? "bg-amber-50 text-amber-800"
-                          : "bg-emerald-50 text-emerald-700",
+                          : "bg-blue-50 text-blue-700",
                       ].join(" ")}
                     >
                       {r.status}
@@ -163,7 +157,7 @@ export default function Page() {
         </div>
 
         <div className="mt-4">
-          <Link href="/checkout" className="text-xs text-slate-600 hover:text-slate-800 inline-flex items-center gap-1">
+          <Link href="/checkout" className="text-xs text-blue-700 hover:text-blue-800 inline-flex items-center gap-1">
             Go to Check-out / Returns <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
         </div>

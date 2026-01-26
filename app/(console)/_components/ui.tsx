@@ -20,7 +20,7 @@ export function Pill({ trend, text }: { trend: "up" | "down"; text: string }) {
     <span
       className={cn(
         "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium",
-        trend === "up" ? "bg-emerald-50 text-emerald-700" : "bg-rose-50 text-rose-700"
+        trend === "up" ? "bg-blue-50 text-blue-700" : "bg-rose-50 text-rose-700"
       )}
     >
       {trend === "up" ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
@@ -32,7 +32,10 @@ export function Pill({ trend, text }: { trend: "up" | "down"; text: string }) {
 export function MiniBar({ value }: { value: number }) {
   return (
     <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
-      <div className="h-full rounded-full bg-slate-900" style={{ width: `${Math.max(6, Math.min(100, value))}%` }} />
+      <div
+        className="h-full rounded-full bg-blue-600"
+        style={{ width: `${Math.max(6, Math.min(100, value))}%` }}
+      />
     </div>
   );
 }
@@ -53,7 +56,7 @@ export function Card({
   return (
     <div className={cn("rounded-2xl border bg-white shadow-sm", className)}>
       {(title || right) && (
-        <div className={cn("flex items-center justify-between px-4 py-3 border-b", headerClassName)}>
+        <div className={cn("flex flex-wrap items-center justify-between gap-2 px-4 py-3 border-b", headerClassName)}>
           <div className="text-sm font-semibold text-slate-900">{title}</div>
           {right}
         </div>
@@ -73,7 +76,7 @@ export function Input({
       <input
         {...props}
         className={cn(
-          "w-full rounded-2xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200",
+          "w-full rounded-2xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-200",
           props.className
         )}
       />
@@ -92,7 +95,7 @@ export function Select({
       <select
         {...props}
         className={cn(
-          "w-full rounded-2xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200",
+          "w-full rounded-2xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-200",
           props.className
         )}
       >
@@ -112,7 +115,7 @@ export function TextArea({
       <textarea
         {...props}
         className={cn(
-          "w-full rounded-2xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-200",
+          "w-full rounded-2xl border bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-200",
           props.className
         )}
       />
@@ -125,7 +128,7 @@ export function PrimaryButton(props: React.ButtonHTMLAttributes<HTMLButtonElemen
     <button
       {...props}
       className={cn(
-        "inline-flex items-center gap-2 rounded-xl bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800 disabled:opacity-50",
+        "inline-flex items-center gap-2 rounded-xl bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50",
         props.className
       )}
     />
@@ -137,7 +140,7 @@ export function SecondaryButton(props: React.ButtonHTMLAttributes<HTMLButtonElem
     <button
       {...props}
       className={cn(
-        "inline-flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50",
+        "inline-flex items-center gap-2 rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm text-blue-700 hover:bg-blue-50 disabled:opacity-50",
         props.className
       )}
     />
