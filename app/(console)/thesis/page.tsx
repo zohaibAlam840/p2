@@ -7,7 +7,14 @@ import ConsoleShell from "../_components/ConsoleShell";
 import { Card, Badge, Pill, MiniBar } from "../_components/ui";
 
 // Mock data for thesis dashboard
-const THESIS_STATS = [
+type ThesisStat = {
+  label: string;
+  value: number;
+  sub: string;
+  trend: "up" | "down";
+  delta: string;
+};
+const THESIS_STATS: ThesisStat[] = [
   { label: "Total Theses", value: 120, sub: "All time", trend: "up", delta: "+5" },
   { label: "Issued", value: 80, sub: "This year", trend: "up", delta: "+2" },
   { label: "Pending", value: 10, sub: "Approvals", trend: "down", delta: "-1" },
