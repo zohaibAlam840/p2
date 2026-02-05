@@ -50,7 +50,7 @@ function DashboardContent() {
 
   // Simulate a dateAdded for demo (real data should have a date field)
   const now = Date.now();
-  const days = (n) => n * 24 * 60 * 60 * 1000;
+  const days = (n: number) => n * 24 * 60 * 60 * 1000;
   const threshold = range === "Last 30 days" ? days(30) : days(180);
   // Fake date mapping for demo
   const overdueWithDate = OVERDUE_ROWS.map((r, i) => ({
