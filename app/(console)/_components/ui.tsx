@@ -7,9 +7,9 @@ export function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
-export function Badge({ text }: { text: string }) {
+export function Badge({ text, className }: { text: string; className?: string }) {
   return (
-    <span className="inline-flex items-center rounded-full border bg-white px-2 py-0.5 text-xs text-slate-600">
+    <span className={cn("inline-flex items-center rounded-full border bg-white px-2 py-0.5 text-xs text-slate-600", className)}>
       {text}
     </span>
   );
@@ -47,7 +47,7 @@ export function Card({
   className,
   headerClassName,
 }: {
-  title?: string;
+  title?: React.ReactNode;
   right?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
