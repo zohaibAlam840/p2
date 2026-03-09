@@ -85,7 +85,7 @@ function InventoryContent() {
   const now = Date.now();
   const days = (n: number) => n * 24 * 60 * 60 * 1000;
   // Fallback to Infinity to show all items if not explicitly filtered for 30 or 180 days
-  const threshold = range === "Last 30 days" ? days(30) : range === "Last 6 Months" ? days(180) : Infinity;
+  const threshold = range === "Last 30 days" ? days(30) : range === "Last 6 months" ? days(180) : Infinity;
 
   const filtered = ALL_BOOKS.filter((b) => {
     const matchesCategory = category === "All" || category === "All Departments" || b.category === category;
