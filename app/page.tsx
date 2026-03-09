@@ -9,18 +9,24 @@ export default function Page() {
           Welcome. Open the operations console to manage circulation and theses.
         </div>
 
-        <div className="mt-5 flex gap-2">
+        <div className="mt-5 flex flex-wrap gap-2">
           <Link
             href="/dashboard"
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-3 py-2 text-sm text-white hover:bg-slate-800"
+            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-black transition-all shadow-xl shadow-slate-900/20 active:scale-95"
           >
-            Go to Dashboard
+            Librarian Console
+          </Link>
+          <Link
+            href="/student"
+            className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-bold text-white hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 active:scale-95 border border-indigo-500"
+          >
+            Student Portal
           </Link>
           <Link
             href="/help"
-            className="inline-flex items-center gap-2 rounded-xl border bg-white px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all active:scale-95"
           >
-            Help
+            Help & Support
           </Link>
         </div>
       </div>
