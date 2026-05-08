@@ -2,17 +2,23 @@
 
 import React from "react";
 import StudentShell from "./_components/StudentShell";
-import { Card, Badge, Pill } from "../(console)/_components/ui";
+import { Card, Badge } from "../(console)/_components/ui";
 import { BookOpen, Calendar, Clock, GraduationCap, Star, TrendingUp, Search as SearchIcon } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "../lib/authContext";
 
 export default function StudentDashboard() {
     const [search, setSearch] = React.useState("");
+    const { user } = useAuth();
+    const studentUser = user?.role === "student" ? user : null;
+    const subtitle = studentUser
+        ? `Welcome back, ${studentUser.name}${studentUser.department ? ` • ${studentUser.department}` : ""}`
+        : "Welcome back";
 
     return (
         <StudentShell
             title="Dashboard"
-            subtitle="Welcome back, Muhammad Zohaib • AI Development (BSIT)"
+            subtitle={subtitle}
         >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Statistics Cards */}

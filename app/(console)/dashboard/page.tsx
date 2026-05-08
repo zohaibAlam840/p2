@@ -2,10 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowUpRight, Download, Plus, ShieldCheck, Clock, Activity } from "lucide-react";
+import { ArrowUpRight, BookPlus, Plus, ShieldCheck, Clock, Activity, Users } from "lucide-react";
 import ConsoleShell from "../_components/ConsoleShell";
 import { Badge, Card, MiniBar, Pill } from "../_components/ui";
 import { useConsole } from "../_components/ConsoleContext";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
 type Stat = {
   label: string;
@@ -42,6 +44,53 @@ export default function Page() {
     >
       <DashboardContent />
     </ConsoleShell>
+  );
+}
+
+function FirestoreSummary() {
+  const [bookCount, setBookCount] = React.useState<number | null>(null);
+  const [memberCount, setMemberCount] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    const unsubBooks = onSnapshot(collection(db, "books"), (s) => setBookCount(s.size));
+    const unsubMembers = onSnapshot(collection(db, "students"), (s) => setMemberCount(s.size));
+    return () => { unsubBooks(); unsubMembers(); };
+  }, []);
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <Link
+        href="/inventory"
+        className="rounded-2xl border bg-white shadow-sm p-4 flex items-center gap-4 hover:border-sky-200 hover:shadow-md transition-all group"
+      >
+        <div className="h-11 w-11 rounded-xl bg-sky-100 text-sky-700 grid place-items-center flex-shrink-0 group-hover:bg-sky-200 transition-colors">
+          <BookPlus className="h-5 w-5" />
+        </div>
+        <div>
+          <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Books in Library</div>
+          <div className="text-2xl font-bold text-slate-900 mt-0.5">
+            {bookCount === null ? "…" : bookCount}
+          </div>
+          <div className="text-[11px] text-slate-400">added via admin console</div>
+        </div>
+      </Link>
+
+      <Link
+        href="/members"
+        className="rounded-2xl border bg-white shadow-sm p-4 flex items-center gap-4 hover:border-emerald-200 hover:shadow-md transition-all group"
+      >
+        <div className="h-11 w-11 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center flex-shrink-0 group-hover:bg-emerald-200 transition-colors">
+          <Users className="h-5 w-5" />
+        </div>
+        <div>
+          <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Registered Members</div>
+          <div className="text-2xl font-bold text-slate-900 mt-0.5">
+            {memberCount === null ? "…" : memberCount}
+          </div>
+          <div className="text-[11px] text-slate-400">students &amp; staff</div>
+        </div>
+      </Link>
+    </div>
   );
 }
 
@@ -86,6 +135,9 @@ function DashboardContent() {
 
   return (
     <>
+      {/* Live Firestore counts */}
+      <FirestoreSummary />
+
       {/* Quick strip */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="rounded-2xl border bg-slate-50 px-4 py-3 flex items-center justify-between">

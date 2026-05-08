@@ -2,20 +2,31 @@
 
 import React from "react";
 import StudentShell from "../_components/StudentShell";
-import { Card, Badge, Input, Select } from "../../(console)/_components/ui";
-import { Filter, Search, ArrowUpRight, BookOpen, Layers, Bookmark } from "lucide-react";
+import { Card, Badge } from "../../(console)/_components/ui";
+import { Search, ArrowUpRight, BookOpen, Layers, Bookmark, Sparkles } from "lucide-react";
 import allBooksData from "../../all_library_books.json";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
-const ALL_BOOKS = allBooksData.books.map((b: any) => {
+type Book = {
+    isbn: string;
+    title: string;
+    author: string;
+    category: string;
+    copies: number;
+    available: number;
+    publisher: string;
+    year: string;
+    shelf?: string;
+    isNew?: boolean;
+};
+
+const STATIC_BOOKS: Book[] = allBooksData.books.map((b: any) => {
     let title = (b.title || "").trim();
     let author = (b.author || "").trim();
     let publisher = (b.publisher || "").trim();
-    let year = b.year || "N/A";
-
-    if (!title && b.raw) {
-        title = (b.raw || "").trim();
-    }
-
+    const year = b.year || "N/A";
+    if (!title && b.raw) title = (b.raw || "").trim();
     return {
         isbn: b.accession_no || "N/A",
         title: title || "Untitled",
@@ -24,11 +35,7 @@ const ALL_BOOKS = allBooksData.books.map((b: any) => {
         copies: b.copies || 1,
         available: b.copies || 1,
         publisher: publisher || "Unknown Publisher",
-        year: year,
-        dateAdded: b.date || new Date().toISOString(),
-        cost: b.cost || "N/A",
-        source: b.source || "N/A",
-        vr_no: b.vr_no || "N/A",
+        year,
     };
 });
 
@@ -36,7 +43,35 @@ export default function StudentCatalog() {
     const [q, setQ] = React.useState("");
     const [category, setCategory] = React.useState("All");
     const [currentPage, setCurrentPage] = React.useState(1);
+    const [firestoreBooks, setFirestoreBooks] = React.useState<Book[]>([]);
     const itemsPerPage = 12;
+
+    React.useEffect(() => {
+        const qRef = query(collection(db, "books"), orderBy("addedAt", "desc"));
+        const unsub = onSnapshot(qRef, (snap) => {
+            setFirestoreBooks(
+                snap.docs.map((d) => {
+                    const data = d.data();
+                    return {
+                        isbn: data.isbn || d.id,
+                        title: data.title || "Untitled",
+                        author: data.author || "Unknown",
+                        category: data.category || "Others",
+                        copies: data.copies || 1,
+                        available: data.available || 0,
+                        publisher: data.publisher || "",
+                        year: data.year || "",
+                        shelf: data.shelf || "",
+                        isNew: true,
+                    };
+                })
+            );
+        });
+        return unsub;
+    }, []);
+
+    // Firestore books shown first (new arrivals), then static catalog
+    const ALL_BOOKS = [...firestoreBooks, ...STATIC_BOOKS];
 
     const filtered = ALL_BOOKS.filter((b) => {
         const matchesCategory = category === "All" || category === "All Departments" || b.category === category;
@@ -45,6 +80,8 @@ export default function StudentCatalog() {
             [b.isbn, b.title, b.author].join(" ").toLowerCase().includes(q.toLowerCase());
         return matchesCategory && matchesQ;
     });
+
+    React.useEffect(() => { setCurrentPage(1); }, [q, category]);
 
     const totalPages = Math.ceil(filtered.length / itemsPerPage);
     const paginated = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -108,7 +145,14 @@ export default function StudentCatalog() {
                                 <div className="h-10 w-10 rounded-2xl bg-indigo-50 text-indigo-600 grid place-items-center shadow-inner">
                                     <BookOpen className="h-5 w-5" />
                                 </div>
-                                <Badge text={book.category} className="bg-slate-100 text-slate-500 font-black border-none px-2 py-0.5" />
+                                <div className="flex items-center gap-1.5">
+                                    {book.isNew && (
+                                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 text-emerald-700 px-2 py-0.5 text-[10px] font-black border-none">
+                                            <Sparkles className="h-3 w-3" /> NEW
+                                        </span>
+                                    )}
+                                    <Badge text={book.category} className="bg-slate-100 text-slate-500 font-black border-none px-2 py-0.5" />
+                                </div>
                             </div>
 
                             <h3 className="text-lg font-black text-slate-900 leading-tight mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2 min-h-[3.5rem] tracking-tight">{book.title}</h3>
@@ -208,7 +252,7 @@ export default function StudentCatalog() {
                                         <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Location</span>
                                         <div className="flex items-center gap-1.5">
                                             <Layers className="h-3.5 w-3.5 text-indigo-500" />
-                                            <span className="text-sm font-black text-slate-900">Shelf B-12</span>
+                                            <span className="text-sm font-black text-slate-900">{selectedBook.shelf || "Shelf B-12"}</span>
                                         </div>
                                     </div>
                                 </div>

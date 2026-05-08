@@ -2,10 +2,19 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowUpRight, Plus } from "lucide-react";
+import { ArrowUpRight, Plus, Trash2 } from "lucide-react";
 import ConsoleShell from "../_components/ConsoleShell";
 import { Badge, Card, Input, Select } from "../_components/ui";
 import { useConsole } from "../_components/ConsoleContext";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
 const now = Date.now();
 const days = (n: number) => new Date(now - n * 24 * 60 * 60 * 1000).toISOString();
@@ -54,6 +63,124 @@ const ALL_BOOKS = allBooksData.books.map((b: any) => {
   };
 });
 
+type FirestoreBook = {
+  id: string;
+  title: string;
+  author: string;
+  publisher: string;
+  year: string;
+  category: string;
+  copies: number;
+  available: number;
+  isbn: string;
+  shelf: string;
+  notes: string;
+  addedBy: string;
+};
+
+function FirestoreBooksCard() {
+  const [books, setBooks] = React.useState<FirestoreBook[]>([]);
+  const [deleting, setDeleting] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    const q = query(collection(db, "books"), orderBy("addedAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setBooks(
+        snapshot.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<FirestoreBook, "id">) }))
+      );
+    });
+    return unsubscribe;
+  }, []);
+
+  async function handleDelete(id: string, title: string) {
+    if (!confirm(`Delete "${title}" from the library?`)) return;
+    setDeleting(id);
+    try {
+      await deleteDoc(doc(db, "books", id));
+    } finally {
+      setDeleting(null);
+    }
+  }
+
+  if (books.length === 0) {
+    return (
+      <Card
+        title={<span className="text-black font-bold">Admin Added Books</span>}
+        right={<Badge text="0 books" className="bg-slate-100 text-slate-600" />}
+      >
+        <p className="text-sm text-slate-500 py-2">
+          No books added yet.{" "}
+          <Link href="/add-books" className="text-sky-700 font-semibold hover:underline">
+            Add your first book →
+          </Link>
+        </p>
+      </Card>
+    );
+  }
+
+  return (
+    <Card
+      title={<span className="text-black font-bold">Admin Added Books</span>}
+      right={<Badge text={`${books.length} books`} className="bg-sky-100 text-sky-800 font-bold" />}
+    >
+      <div className="overflow-hidden rounded-xl border border-slate-100 shadow-sm">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr className="bg-slate-50 border-b border-slate-100">
+              <th className="text-left font-bold py-3 px-4 text-black uppercase tracking-wider text-[10px]">Book</th>
+              <th className="text-left font-bold py-3 px-4 text-black uppercase tracking-wider text-[10px]">Category</th>
+              <th className="text-left font-bold py-3 px-4 text-black uppercase tracking-wider text-[10px]">Copies</th>
+              <th className="text-left font-bold py-3 px-4 text-black uppercase tracking-wider text-[10px]">Shelf</th>
+              <th className="text-right font-bold py-3 px-4 text-black" />
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-50 bg-white">
+            {books.map((b) => (
+              <tr key={b.id} className="hover:bg-slate-50/80 transition-colors">
+                <td className="py-3 px-4">
+                  <div className="font-bold text-slate-900 leading-tight">{b.title}</div>
+                  <div className="text-xs text-slate-500 mt-0.5">
+                    {b.author}{b.publisher ? ` · ${b.publisher}` : ""}{b.year ? ` · ${b.year}` : ""}
+                  </div>
+                  {b.isbn && <div className="text-[10px] font-mono text-slate-400 mt-0.5">ID: {b.isbn}</div>}
+                </td>
+                <td className="py-3 px-4">
+                  <Badge text={b.category} className="bg-slate-100 text-black font-bold border-none px-2.5 py-1 text-[10px]" />
+                </td>
+                <td className="py-3 px-4">
+                  <div className="flex items-center gap-3">
+                    <div>
+                      <div className="text-[10px] text-slate-400 uppercase font-bold">Total</div>
+                      <div className="text-sm font-bold text-black">{b.copies}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-slate-400 uppercase font-bold">Avail</div>
+                      <div className={`text-sm font-bold ${b.available > 0 ? "text-emerald-700" : "text-rose-700"}`}>
+                        {b.available}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-3 px-4 text-sm text-slate-600 font-medium">{b.shelf || "—"}</td>
+                <td className="py-3 px-4 text-right">
+                  <button
+                    onClick={() => handleDelete(b.id, b.title)}
+                    disabled={deleting === b.id}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 transition-all active:scale-95 disabled:opacity-50"
+                    title="Delete book"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Card>
+  );
+}
+
 export default function Page() {
   return (
     <ConsoleShell
@@ -71,6 +198,7 @@ export default function Page() {
         </>
       }
     >
+      <FirestoreBooksCard />
       <InventoryContent />
     </ConsoleShell>
   );
